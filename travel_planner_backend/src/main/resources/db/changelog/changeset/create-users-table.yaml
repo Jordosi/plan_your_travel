@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-users-table
+      author: admin
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: timestamp
+                  type: timestamp
+                  defaultValue: CURRENT_TIMESTAMP
+              - column:
+                    name: role
+                    type: varchar(20)
+                    defaultValue: 'USER'
+                    constraints:
+                      nullable: false
