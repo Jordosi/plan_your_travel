@@ -5,9 +5,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.jordosi.travel_planner.dto.AuthRequest;
-import ru.jordosi.travel_planner.dto.AuthResponse;
-import ru.jordosi.travel_planner.dto.RegisterRequest;
+import ru.jordosi.travel_planner.dto.auth.AuthRequest;
+import ru.jordosi.travel_planner.dto.auth.AuthResponse;
+import ru.jordosi.travel_planner.dto.auth.RegisterRequest;
 
 @RestController
 @RequestMapping("/api/auth")

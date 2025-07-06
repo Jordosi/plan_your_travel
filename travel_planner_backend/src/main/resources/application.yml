@@ -1,6 +1,8 @@
 spring:
   application:
     name: travel_planner_backend
+  cache:
+    type: redis
   datasource:
     url: jdbc:postgresql://postgres:5432/travel_planner
     username: postgres
@@ -21,6 +23,13 @@ spring:
       mail.smtp.starttls.enable: true
     liquibase:
       enabled: false
+  redis:
+    host: localhost
+    port: 6379
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
 jwt:
   secret-key: "dGhpcyBpcyBhIHNlY3JldCBrZXkgZm9yIGp3dCB0b2tlbiBnZW5lcmF0aW9u"
   expiration: 86400000

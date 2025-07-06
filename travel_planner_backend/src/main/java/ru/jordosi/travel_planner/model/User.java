@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +22,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Table(name="users")
 @NoArgsConstructor
+@DynamicUpdate
 @Builder(toBuilder=true)
 public class User implements UserDetails {
     @Id

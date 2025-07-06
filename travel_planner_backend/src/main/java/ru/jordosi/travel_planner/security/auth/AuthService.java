@@ -7,7 +7,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
-import ru.jordosi.travel_planner.dto.*;
+import ru.jordosi.travel_planner.dto.auth.AuthRequest;
+import ru.jordosi.travel_planner.dto.auth.AuthResponse;
+import ru.jordosi.travel_planner.dto.auth.RegisterRequest;
+import ru.jordosi.travel_planner.dto.user.CreateUserRequest;
+import ru.jordosi.travel_planner.dto.user.UserResponse;
 import ru.jordosi.travel_planner.exception.EmailAlreadyExistsException;
 import ru.jordosi.travel_planner.model.User;
 import ru.jordosi.travel_planner.repository.UserRepository;
