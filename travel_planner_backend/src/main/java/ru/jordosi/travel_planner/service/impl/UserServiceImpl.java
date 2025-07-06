@@ -15,8 +15,10 @@ import ru.jordosi.travel_planner.model.User;
 import ru.jordosi.travel_planner.repository.UserRepository;
 import ru.jordosi.travel_planner.service.NationalityService;
 import ru.jordosi.travel_planner.service.UserService;
+import ru.jordosi.travel_planner.utils.TagValidator;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -26,6 +28,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final NationalityService nationalityService;
+    private final TagValidator tagValidator;
 
     @Override
     @Transactional
@@ -102,6 +105,31 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public UserResponse getUserProfile(Long id) {
         return mapToUserResponse(userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id)));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Set<String> getUserTags(Long id) {
+        User user =  userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
+        return user.getPreferenceTags();
+    }
+
+    @Override
+    @Transactional
+    public void addTags(Long id, Set<String> tags) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new  UserNotFoundException(id));
+        tagValidator.validate(tags);
+        user.getPreferenceTags().addAll(tags);
+    }
+
+    @Override
+    @Transactional
+    public void removeTags(Long id, Set<String> tags) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
+        user.getPreferenceTags().removeAll(tags);
     }
 
     private UserResponse mapToUserResponse(User savedUser) {

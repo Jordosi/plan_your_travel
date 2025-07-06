@@ -1,9 +1,10 @@
 package ru.jordosi.travel_planner.service;
 
-import org.springframework.transaction.annotation.Transactional;
 import ru.jordosi.travel_planner.dto.user.CreateUserRequest;
 import ru.jordosi.travel_planner.dto.user.UpdateUserRequest;
 import ru.jordosi.travel_planner.dto.user.UserResponse;
+
+import java.util.Set;
 
 public interface UserService {
     UserResponse createUser(CreateUserRequest request);
@@ -17,4 +18,9 @@ public interface UserService {
     void deleteUser(Long id);
 
     UserResponse getUserProfile(Long id);
+
+    Set<String> getUserTags(Long id);
+
+    void addTags(Long id, Set<String> tags);
+    void removeTags(Long id, Set<String> tags);
 }
