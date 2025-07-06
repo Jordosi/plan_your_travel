@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.jordosi.travel_planner.dto.CreateUserRequest;
-import ru.jordosi.travel_planner.dto.UpdateUserRequest;
-import ru.jordosi.travel_planner.dto.UserResponse;
+import org.springframework.transaction.annotation.Transactional;
+import ru.jordosi.travel_planner.dto.user.CreateUserRequest;
+import ru.jordosi.travel_planner.dto.user.UpdateUserRequest;
+import ru.jordosi.travel_planner.dto.user.UserResponse;
 import ru.jordosi.travel_planner.exception.EmailAlreadyExistsException;
+import ru.jordosi.travel_planner.exception.InvalidNationalityException;
 import ru.jordosi.travel_planner.exception.UserNotFoundException;
 import ru.jordosi.travel_planner.model.User;
 import ru.jordosi.travel_planner.repository.UserRepository;
@@ -26,13 +28,10 @@ public class UserServiceImpl implements UserService {
     private final NationalityService nationalityService;
 
     @Override
+    @Transactional
     public UserResponse createUser(CreateUserRequest request) {
         if (userRepository.existsByEmail(request.email())){
             throw new EmailAlreadyExistsException("Email already exists");
-        }
-
-        if (request.nationality() != null) {
-            nationalityService.validateNationality(request.nationality());
         }
 
         User user = User.builder()
@@ -53,6 +52,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserResponse findUserById(Long id) {
         return userRepository.findById(id)
                 .map(this::mapToUserResponse)
@@ -60,6 +60,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserResponse findUserByEmail(String email) {
         return userRepository.findByEmail(email)
                 .map(this::mapToUserResponse)
@@ -67,24 +68,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserResponse updateUser(Long id, UpdateUserRequest request) {
 
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
         if (request.nationality() != null) {
-            nationalityService.validateNationality(request.nationality());
+            if (!nationalityService.validateNationality(request.nationality())) {
+                throw new InvalidNationalityException("Nationality not found");
+            }
             user.setNationality(request.nationality());
         }
         Optional.ofNullable(request.firstName()).ifPresent(user::setFirstName);
         Optional.ofNullable(request.lastName()).ifPresent(user::setLastName);
         Optional.ofNullable(request.avatarURL()).ifPresent(user::setAvatarURL);
         Optional.ofNullable(request.preferredTags()).ifPresent(user::setPreferenceTags);
-        Optional.of(request.enabled()).ifPresent(user::setEnabled);
 
-        return mapToUserResponse(userRepository.save(user));
+        return mapToUserResponse(user);
     }
 
     @Override
+    @Transactional
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {
             throw new UserNotFoundException(id);
@@ -95,6 +99,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserResponse getUserProfile(Long id) {
         return mapToUserResponse(userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id)));
     }

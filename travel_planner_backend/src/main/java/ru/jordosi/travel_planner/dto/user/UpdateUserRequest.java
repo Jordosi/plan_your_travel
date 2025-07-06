@@ -1,4 +1,4 @@
-package ru.jordosi.travel_planner.dto;
+package ru.jordosi.travel_planner.dto.user;
 
 import java.util.Set;
 

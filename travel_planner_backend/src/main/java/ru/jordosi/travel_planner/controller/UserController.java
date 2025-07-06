@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import ru.jordosi.travel_planner.dto.UpdateUserRequest;
-import ru.jordosi.travel_planner.dto.UserResponse;
+import ru.jordosi.travel_planner.dto.user.UpdateUserRequest;
+import ru.jordosi.travel_planner.dto.user.UserResponse;
 import ru.jordosi.travel_planner.model.User;
 import ru.jordosi.travel_planner.service.UserService;
 
