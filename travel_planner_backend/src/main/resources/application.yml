@@ -21,8 +21,6 @@ spring:
     properties:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
-    liquibase:
-      enabled: false
   redis:
     host: localhost
     port: 6379
