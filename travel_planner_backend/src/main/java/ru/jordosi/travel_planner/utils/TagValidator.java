@@ -2,7 +2,6 @@ package ru.jordosi.travel_planner.utils;
 
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Component
